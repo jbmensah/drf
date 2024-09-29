@@ -17,6 +17,8 @@ class ProductListCreateAPIView(
 
 	def perform_create(self, serializer):
 		# serializer.save(user=self.request.user)
+		# email = serializer.validated_data.pop('email')
+		# print(email)
 		print(serializer.validated_data)
 		title = serializer.validated_data.get('title')
 		content = serializer.validated_data.get('content') or None
@@ -98,7 +100,7 @@ class ProductMixinView(
 		return self.create(request, *args, **kwargs)
 
 	def perform_create(self, serializer):
-		# serializer.save(user=self.request.user)
+		# serializer.save(user=self.request.user)		
 		print(serializer.validated_data)
 		title = serializer.validated_data.get('title')
 		content = serializer.validated_data.get('content') or None
