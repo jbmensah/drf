@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-
+import datetime 
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -37,11 +37,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # internal apps
     'api',
     'products',
+	'search',
+	# third party packages
     'rest_framework',
     'rest_framework.authtoken',
-    'search',
+	'rest_framework_simplejwt',
+    
 ]
 
 MIDDLEWARE = [
@@ -128,8 +132,9 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 auth_classes = [
-    "rest_framework.authentication.SessionAuthentication",
+    "rest_framework.authentication.SessionAuthentication",	
     "api.authentication.TokenAuthentication",
+	'rest_framework_simplejwt.authentication.JWTAuthentication',
 ]
 
 # if DEBUG:
@@ -141,7 +146,15 @@ REST_FRAMEWORK = {
 	"DEFAULT_AUTHENTICATION_CLASSES": auth_classes,        
 	"DEFAULT_PERMISSION_CLASSES": [
 		"rest_framework.permissions.IsAuthenticatedOrReadOnly",
+		
     ],
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
     "PAGE_SIZE": 10
+}
+
+
+SIMPLE_JWT = {
+	"AUTH_HEADER_TYPES": ["Bearer"],
+    "ACCESS_TOKEN_LIFETIME": datetime.timedelta(seconds=30), # hours=1
+    "REFRESH_TOKEN_LIFETIME": datetime.timedelta(minutes=1), # days=1
 }
